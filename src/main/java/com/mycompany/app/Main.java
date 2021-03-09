@@ -4,10 +4,11 @@ import java.util.concurrent.Callable;
 
 import com.mycompany.app.picocli_sub_command.SubCommandBuild;
 import com.mycompany.app.picocli_sub_command.SubCommandClean;
+import com.mycompany.app.picocli_sub_command.SubCommandNew;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
-@Command(name = "gen", subcommands = {SubCommandClean.class, SubCommandBuild.class})
+@Command(name = "gen", subcommands = {SubCommandClean.class, SubCommandBuild.class, SubCommandNew.class})
 public class Main implements Callable<Integer> {
 
     @Override
