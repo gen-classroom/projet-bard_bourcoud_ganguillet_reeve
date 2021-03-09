@@ -1,10 +1,12 @@
 package com.mycompany.app;
 
 import java.util.concurrent.Callable;
+
+import com.mycompany.app.picocli_sub_command.SubCommandClean;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
-@Command(name = "gen")
+@Command(name = "gen", subcommands = {SubCommandClean.class})
 public class Main implements Callable<Integer> {
 
     @Override
@@ -17,5 +19,4 @@ public class Main implements Callable<Integer> {
         int rc = new CommandLine(new Main()).execute(args);
         System.exit(rc);
     }
-
 }
