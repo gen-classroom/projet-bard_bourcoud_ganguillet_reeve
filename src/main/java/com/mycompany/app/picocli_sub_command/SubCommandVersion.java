@@ -9,7 +9,7 @@ import picocli.CommandLine;
 
 import java.util.concurrent.Callable;
 
-@CommandLine.Command(name = "-version", description = "Give the version of the site.")
+@CommandLine.Command(name = "-version", description = "Give the version of the programm.")
 public class SubCommandVersion implements Callable<Integer> {
 
     @Override
