@@ -2,15 +2,12 @@ package com.mycompany.app;
 
 import java.util.concurrent.Callable;
 
-import com.mycompany.app.picocli_sub_command.SubCommandBuild;
-import com.mycompany.app.picocli_sub_command.SubCommandClean;
-import com.mycompany.app.picocli_sub_command.SubCommandNew;
-import com.mycompany.app.picocli_sub_command.SubCommandServe;
+import com.mycompany.app.picocli_sub_command.*;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
 @Command(name = "gen", subcommands = { SubCommandClean.class, SubCommandBuild.class, SubCommandNew.class,
-        SubCommandServe.class })
+        SubCommandServe.class, SubCommandVersion.class})
 public class Main implements Callable<Integer> {
 
     @Override
