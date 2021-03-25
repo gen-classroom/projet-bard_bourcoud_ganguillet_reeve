@@ -1,6 +1,4 @@
 package com.mycompany.app.picocli_sub_command;
-
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
@@ -30,7 +28,15 @@ public class SubCommandInit implements Callable<Integer> {
                 )
         );
 
-        indexWriter.write("something");
+        final String baseIndexText = "titre: Mon premier article\n" +
+                "auteur: Joe Dassin\n" +
+                "date: 2021-03-10"  +
+                "---\n" +
+                "# Mon premier article\n" +
+                "## Mon sous-titre\n" +
+                "Le contenu de mon article.";
+
+        indexWriter.write(baseIndexText);
 
         indexWriter.close();
 
