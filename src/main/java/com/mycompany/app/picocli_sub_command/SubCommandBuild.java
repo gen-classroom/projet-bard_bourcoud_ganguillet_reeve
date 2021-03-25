@@ -7,8 +7,8 @@ import java.util.concurrent.Callable;
 public class SubCommandBuild implements Callable<Integer> {
 
     @Override
-    public Integer call() throws Exception {
-        System.out.println("Buid static website");
+    public Integer call() {
+        //créer sous-dossier build
         return 0;
     }
 }
