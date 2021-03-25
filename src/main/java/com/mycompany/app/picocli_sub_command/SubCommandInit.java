@@ -9,7 +9,7 @@ import picocli.CommandLine.Command;
 @Command(name = "init")
 public class SubCommandInit implements Callable<Integer> {
 
-    @CommandLine.Parameters(index = "0..*", description = "the root pathname")
+    @CommandLine.Parameters(index = "0", description = "the root pathname")
     private String rootPathname;
 
     @Override
@@ -20,7 +20,9 @@ public class SubCommandInit implements Callable<Integer> {
         }
         StringBuilder path = new StringBuilder(System.getProperty("user.dir") + rootPathname);
 
-        new File(path.toString()).mkdirs();
+        if(new File(path.toString()).mkdirs()){
+            System.out.println("error :directory can't be created");
+        }
         Writer indexWriter = new BufferedWriter(
                 new OutputStreamWriter(
                         new FileOutputStream(path.toString() + "/index.md"),
@@ -29,7 +31,7 @@ public class SubCommandInit implements Callable<Integer> {
         );
 
         final String baseIndexText = "titre: Mon premier article\n" +
-                "auteur: Joe Dassin\n" +
+                "auteur: Joe Doe\n" +
                 "date: 2021-03-10"  +
                 "---\n" +
                 "# Mon premier article\n" +
@@ -51,9 +53,9 @@ public class SubCommandInit implements Callable<Integer> {
 
         configWriter.close();
         path.append("/contents");
-        new File(path.toString()).mkdir();
-
-
+        if(new File(path.toString()).  mkdir()){
+            System.out.println("error :directory can't be created");
+        }
 
         return 0;
     }
