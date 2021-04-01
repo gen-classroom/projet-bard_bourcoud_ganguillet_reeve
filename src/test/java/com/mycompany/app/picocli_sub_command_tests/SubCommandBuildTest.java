@@ -9,8 +9,9 @@ public class SubCommandBuildTest {
      * Rigorous Test :-)
      */
     @Test
-    public void shouldAnswerWithTrue()
+    public void shouldCreateSubDirectoryBuild()
     {
+        //TODO quand on saura comment tester des commandes picocli
         assertTrue( true );
     }
 }
