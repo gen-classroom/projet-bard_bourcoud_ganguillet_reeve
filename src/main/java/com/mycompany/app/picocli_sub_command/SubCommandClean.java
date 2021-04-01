@@ -13,17 +13,19 @@ public class SubCommandClean implements Callable<Integer> {
             String currentPath = System.getProperty("user.dir");
             File buildDirectory = new File(currentPath + "/build");
             deleteDirectory(buildDirectory);
-        return 0;
+            return 0;
     }
 
-    private boolean deleteDirectory(File directory)
+    private void deleteDirectory(File directory)
     {
+        if(directory == null) return;
+
         File[] allContents = directory.listFiles();
         if (allContents != null) {
             for (File file : allContents) {
                 deleteDirectory(file);
             }
         }
-        return directory.delete();
+        directory.delete();
     }
 }
