@@ -45,3 +45,51 @@ public class SubCommandBuild implements Callable<Integer> {
         }
     }
 }
+
+class BuildVisitor extends SimpleFileVisitor<Path> {
+
+    private final Path mySite;
+    private final Path build;
+
+    public BuildVisitor(Path mySite, Path build) {
+        this.mySite = mySite;
+        this.build = build;
+    }
+
+    @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+        if (dir.toAbsolutePath().equals(build.toAbsolutePath())) {
+            return FileVisitResult.SKIP_SUBTREE;
+        }
+        Path relative = mySite.relativize(dir);
+        Path newDir = build.resolve(relative);
+        newDir.toFile().mkdirs();
+        super.preVisitDirectory(dir, attrs);
+        return FileVisitResult.CONTINUE;
+}
+
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+        System.out.print(file + " -> ");
+        Path relative = mySite.relativize(file);
+        Path htmlFile = build.resolve(relative);
+        if (file.toString().toLowerCase().endsWith(".md")) {
+            Page page = new Page(file.toFile());
+            String filename = htmlFile.toAbsolutePath().toString();
+            String prefix = filename.substring(0, filename.length() - 3);
+            FileOutputStream writer = new FileOutputStream(prefix + ".html");
+            writer.write(page.getContentAsHtml().getBytes());
+
+            writer.close();
+
+            System.out.println(htmlFile);
+        } else {
+            // TODO: Copie fichier
+            System.out.println(htmlFile);
+        }
+
+        super.visitFile(file, attrs);
+
+        return FileVisitResult.CONTINUE;
+    }
+}
