@@ -20,7 +20,7 @@ public class SubCommandInit implements Callable<Integer> {
         }
         StringBuilder path = new StringBuilder(System.getProperty("user.dir") + rootPathname);
 
-        if(new File(path.toString()).mkdirs()){
+        if(!new File(path.toString()).mkdirs()){
             System.out.println("error :directory can't be created");
         }
         Writer indexWriter = new BufferedWriter(
