@@ -3,11 +3,9 @@ package com.mycompany.app.picocli_sub_command;
 import com.mycompany.app.Page;
 import picocli.CommandLine.Command;
 
-import java.io.*;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.concurrent.Callable;
 
@@ -16,48 +14,41 @@ public class SubCommandBuild implements Callable<Integer> {
 
     @Override
     public Integer call() throws IOException {
-        //créer sous-dossier build
         String repertoireCourant = System.getProperty("user.dir") + "/mySite";
-        //TODO : enlever le mySite quand on fait
-        // le .jar
-        final File mySite = new File(repertoireCourant);
-        File build = new File(repertoireCourant + "/build");
-        System.out.println(repertoireCourant);
-        build.mkdirs();
+        final Path mySite = Paths.get(repertoireCourant);
+        Path build = Paths.get(repertoireCourant + "/build");
+        build.toFile().mkdirs();
 
-        Files.walkFileTree(mySite.toPath(), new BuildVisitor(mySite.toPath(), build.toPath()));
-        //parcourirEtCopier(main);
+        Files.walkFileTree(mySite, new BuildVisitor(mySite, build));
 
         return 0;
     }
-
-    public static void parcourirEtCopier(File node) {
-
-        System.out.println(node);
-
-        if (node.isDirectory()) {
-            if (node.getName().equals("build")) return;
-            String[] subNote = node.list();
-            for (String filename : subNote) {
-
-                parcourirEtCopier(new File(node, filename));
-            }
-        }
-    }
 }
 
+/**
+ * Visiteur convertissant les fichiers Html et copiant les autres fichiers du chemin source au chemin de destination.
+ */
 class BuildVisitor extends SimpleFileVisitor<Path> {
 
     private final Path mySite;
     private final Path build;
 
+    /**
+     * @param mySite Le chemin source du site.
+     * @param build  Le chemin où les fichiers seront convertis ou copiés.
+     */
     public BuildVisitor(Path mySite, Path build) {
         this.mySite = mySite;
         this.build = build;
     }
 
+    /**
+     * @param dir   Le chemin du dossier qui sera visité.
+     * @param attrs attributs du dossier
+     * @return le résultat de la visite
+     */
     @Override
-    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
         if (dir.toAbsolutePath().equals(build.toAbsolutePath())) {
             return FileVisitResult.SKIP_SUBTREE;
         }
@@ -66,26 +57,30 @@ class BuildVisitor extends SimpleFileVisitor<Path> {
         newDir.toFile().mkdirs();
         super.preVisitDirectory(dir, attrs);
         return FileVisitResult.CONTINUE;
-}
+    }
 
+    /**
+     * @param file  chemin du fichier à visiter
+     * @param attrs attributs du fichier à visiter
+     * @return résultat de la visite
+     * @throws IOException à cause de l'utilisation de FileOutputStream
+     */
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         System.out.print(file + " -> ");
         Path relative = mySite.relativize(file);
-        Path htmlFile = build.resolve(relative);
+        Path newFile = build.resolve(relative);
         if (file.toString().toLowerCase().endsWith(".md")) {
             Page page = new Page(file.toFile());
-            String filename = htmlFile.toAbsolutePath().toString();
+
+            String filename = newFile.toAbsolutePath().toString();
             String prefix = filename.substring(0, filename.length() - 3);
             FileOutputStream writer = new FileOutputStream(prefix + ".html");
             writer.write(page.getContentAsHtml().getBytes());
 
             writer.close();
-
-            System.out.println(htmlFile);
         } else {
-            // TODO: Copie fichier
-            System.out.println(htmlFile);
+            Files.copy(file, newFile, StandardCopyOption.REPLACE_EXISTING);
         }
 
         super.visitFile(file, attrs);
