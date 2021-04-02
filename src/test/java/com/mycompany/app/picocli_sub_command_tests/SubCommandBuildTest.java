@@ -5,9 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class SubCommandBuildTest {
-    /**
-     * Rigorous Test :-)
-     */
+
     @Test
     public void shouldCreateSubDirectoryBuild()
     {
