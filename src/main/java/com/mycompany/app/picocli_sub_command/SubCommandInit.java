@@ -53,7 +53,7 @@ public class SubCommandInit implements Callable<Integer> {
 
         configWriter.close();
         path.append("/contents");
-        if(new File(path.toString()).  mkdir()){
+        if(!new File(path.toString()).  mkdir()){
             System.out.println("error :directory can't be created");
         }
 
