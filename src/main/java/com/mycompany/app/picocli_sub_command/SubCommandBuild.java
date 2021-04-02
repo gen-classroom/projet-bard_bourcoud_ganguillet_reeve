@@ -14,7 +14,7 @@ public class SubCommandBuild implements Callable<Integer> {
 
     @Override
     public Integer call() throws IOException {
-        String repertoireCourant = System.getProperty("user.dir") + "/mySite";
+        String repertoireCourant = System.getProperty("user.dir");// + "/mySite";
         final Path mySite = Paths.get(repertoireCourant);
         Path build = Paths.get(repertoireCourant + "/build");
         build.toFile().mkdirs();
