@@ -20,9 +20,7 @@ public class SubCommandInit implements Callable<Integer> {
         }
         StringBuilder path = new StringBuilder(System.getProperty("user.dir") + rootPathname);
 
-        if(!new File(path.toString()).mkdirs()){
-            System.out.println("error :directory can't be created");
-        }
+        new File(path.toString()).mkdirs();
         Writer indexWriter = new BufferedWriter(
                 new OutputStreamWriter(
                         new FileOutputStream(path.toString() + "/index.md"),
@@ -53,9 +51,7 @@ public class SubCommandInit implements Callable<Integer> {
 
         configWriter.close();
         path.append("/contents");
-        if(!new File(path.toString()).  mkdir()){
-            System.out.println("error :directory can't be created");
-        }
+        new File(path.toString()).  mkdir();
 
         return 0;
     }
