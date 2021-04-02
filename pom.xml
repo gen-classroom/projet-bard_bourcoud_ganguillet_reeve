@@ -5,8 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.mycompany.app</groupId>
-  <artifactId>projet-bard_bourcoud_ganguillet_reeve</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <artifactId>statique</artifactId>
+  <version>0.0.1</version>
 
   <name>projet-bard_bourcoud_ganguillet_reeve</name>
   <!-- FIXME change it to the project's website -->
@@ -88,6 +88,29 @@
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <configuration>
+            <appendAssemblyId>false</appendAssemblyId>
+            <archive>
+              <manifest>
+                <mainClass>com.mycompany.app.Main</mainClass>
+              </manifest>
+            </archive>
+            <descriptorRefs>
+              <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+          </configuration>
+          <executions>
+            <execution>
+              <id>make-assembly</id>
+              <phase>package</phase> <!-- bind to the packaging phase -->
+              <goals>
+                <goal>single</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
