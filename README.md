@@ -8,7 +8,8 @@ Ce projet a été créé dans le cadre du cours génie logiciel dispensé par la
 1. Télécharger la release statique-0.0.1.jar
 2. Déplacer le .jar dans le dossier ou vous voulez créer votre dossier de travail qui contiendra les pages de votre site
 3. ouvrir un terminal de commande et accéder au dossier ou se trouve le .jar
-4. Exécuter la commande : "java -jar statique-0.0.1.jar init /nomDeVotreDossier"
+4. Exécuter la commande : "java -jar statique-0.0.1.jar init /nomDeVotreDossier", Si la commande ne marche pas, 
+essayez de mettre /nomDeVotreDossier entre guillements double. 
 5. Votre projet a été créé dans votre dossier de travail portant le nom précisé lors de la commande précédente
 
 ### Compiler votre site statique
