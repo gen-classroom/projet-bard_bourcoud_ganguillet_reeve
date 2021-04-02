@@ -30,7 +30,9 @@ public class SubCommandBuild implements Callable<Integer> {
  */
 class BuildVisitor extends SimpleFileVisitor<Path> {
 
+    // Le chemin source du site.
     private final Path mySite;
+    // Le chemin de destination où les fichiers seront convertis ou copiés.
     private final Path build;
 
     /**
@@ -52,10 +54,11 @@ class BuildVisitor extends SimpleFileVisitor<Path> {
         if (dir.toAbsolutePath().equals(build.toAbsolutePath())) {
             return FileVisitResult.SKIP_SUBTREE;
         }
+
         Path relative = mySite.relativize(dir);
         Path newDir = build.resolve(relative);
         newDir.toFile().mkdirs();
-        super.preVisitDirectory(dir, attrs);
+
         return FileVisitResult.CONTINUE;
     }
 
@@ -67,7 +70,6 @@ class BuildVisitor extends SimpleFileVisitor<Path> {
      */
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        System.out.print(file + " -> ");
         Path relative = mySite.relativize(file);
         Path newFile = build.resolve(relative);
         if (file.toString().toLowerCase().endsWith(".md")) {
@@ -82,8 +84,6 @@ class BuildVisitor extends SimpleFileVisitor<Path> {
         } else {
             Files.copy(file, newFile, StandardCopyOption.REPLACE_EXISTING);
         }
-
-        super.visitFile(file, attrs);
 
         return FileVisitResult.CONTINUE;
     }
