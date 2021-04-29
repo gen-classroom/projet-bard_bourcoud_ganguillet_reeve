@@ -55,8 +55,25 @@ public class SubCommandInit implements Callable<Integer> {
         configWriter.write(baseConfigText);
 
         configWriter.close();
-        path.append("/contents");
-        new File(path.toString()).  mkdir();
+
+        new File(path.toString() + "/contents").mkdir();
+
+        path.append("/template");
+        new File(path.toString()).mkdir();
+
+        Writer menuHtml = new BufferedWriter(
+                new OutputStreamWriter(
+                        new FileOutputStream(path.toString() + "/menu.html"),
+                        StandardCharsets.UTF_8
+                )
+        );
+        final String baseMenuText = "<ul>\n" +
+                "\t<li><a href=\"/index.html\">home</a></li>\n" +
+                "\t<li><a href=\"/content/page.html\">page</a></li>\n" +
+                "</ul>";
+
+        menuHtml.write(baseMenuText);
+        menuHtml.close();
 
         return 0;
     }
