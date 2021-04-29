@@ -45,6 +45,14 @@
       <artifactId>commonmark</artifactId>
       <version>0.17.1</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.samskivert/jmustache -->
+
+    <dependency>
+      <groupId>com.samskivert</groupId>
+      <artifactId>jmustache</artifactId>
+      <version>1.15</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>

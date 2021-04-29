@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.io.StringReader;
 
+import com.mycompany.app.template.Page;
 import org.junit.Test;
 
 /**
