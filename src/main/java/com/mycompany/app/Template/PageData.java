@@ -14,4 +14,7 @@ package com.mycompany.app.Template;
 
     private final PageMetaData metaData;
 
-}
+     public PageMetaData getMetaData() {
+         return metaData;
+     }
+ }
