@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package com.mycompany.app.Template;
 
 import java.io.BufferedReader;
 import java.io.File;

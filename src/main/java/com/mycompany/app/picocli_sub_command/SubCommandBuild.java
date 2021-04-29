@@ -1,6 +1,6 @@
 package com.mycompany.app.picocli_sub_command;
 
-import com.mycompany.app.Page;
+import com.mycompany.app.Template.Page;
 import picocli.CommandLine.Command;
 
 import java.io.FileOutputStream;
