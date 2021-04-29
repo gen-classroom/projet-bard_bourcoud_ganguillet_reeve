@@ -75,6 +75,26 @@ public class SubCommandInit implements Callable<Integer> {
         menuHtml.write(baseMenuText);
         menuHtml.close();
 
+        Writer layoutHtml = new BufferedWriter(
+                new OutputStreamWriter(
+                        new FileOutputStream(path.toString() + "/layout.html"),
+                        StandardCharsets.UTF_8
+                )
+        );
+        final String baseLayoutMenu = "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "\t<meta charset=\"utf-8\">\n" +
+                "\t<title>{{ site.titre }} | {{ page.titre }}</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "\t{% include menu.html }\n" +
+                "\t{{ content }}\n" +
+                "</body>\n" +
+                "</html>";
+
+        layoutHtml.write(baseLayoutMenu);
+        layoutHtml.close();
+
         return 0;
     }
 }
