@@ -14,7 +14,7 @@ public class PageDataTest {
         String tmpl = "{{content}}";
         Template t = Mustache.compiler().compile(tmpl);
 
-        tmpl = (t.execute(new PageData("hello", new PageMetaData("title","author", "12.02.2012"))));
+        tmpl = t.execute(new PageData("hello", new PageMetaData("title","author", "12.02.2012")));
         assertEquals( "hello",tmpl );
     }
 
@@ -24,7 +24,7 @@ public class PageDataTest {
         String tmpl = "{{metaData.title}} {{metaData.author}} {{metaData.date}}";
         Template t = Mustache.compiler().compile(tmpl);
 
-        tmpl = (t.execute(new PageData("content", new PageMetaData("title","author", "12.02.2012"))));
+        tmpl = t.execute(new PageData("content", new PageMetaData("title","author", "12.02.2012")));
 
         assertEquals( "title author 12.02.2012",tmpl );
     }
@@ -36,7 +36,7 @@ public class PageDataTest {
                 "{{content}}";
         Template t = Mustache.compiler().compile(tmpl);
 
-        tmpl = (t.execute(new PageData("content", new PageMetaData("title","author", "12.02.2012"))));
+        tmpl = t.execute(new PageData("content", new PageMetaData("title","author", "12.02.2012")));
 
         assertEquals( "title author 12.02.2012\ncontent",tmpl );
     }
