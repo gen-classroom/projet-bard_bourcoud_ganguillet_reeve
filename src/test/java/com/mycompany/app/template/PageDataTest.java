@@ -1,4 +1,4 @@
-package com.mycompany.app.Template;
+package com.mycompany.app.template;
 
 import com.samskivert.mustache.Template;
 import org.junit.Test;

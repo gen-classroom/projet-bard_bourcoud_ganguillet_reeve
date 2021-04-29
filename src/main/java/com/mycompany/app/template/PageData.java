@@ -1,4 +1,4 @@
-package com.mycompany.app.Template;
+package com.mycompany.app.template;
 
  public class PageData {
     public PageData(String content, PageMetaData metaData) {
