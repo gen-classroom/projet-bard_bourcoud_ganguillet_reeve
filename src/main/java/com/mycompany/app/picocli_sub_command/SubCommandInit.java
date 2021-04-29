@@ -47,7 +47,12 @@ public class SubCommandInit implements Callable<Integer> {
                 )
         );
 
-        configWriter.write("something");
+        final String baseConfigText = "{\n" +
+                "\t\"domaine\" : \"www.mon-site.com\",\n" +
+                "\t\"titre\" : \"mon Site\"\n" +
+                "}";
+
+        configWriter.write(baseConfigText);
 
         configWriter.close();
         path.append("/contents");
