@@ -11,14 +11,6 @@ public class SiteConfig {
     private String domain;
     private String title;
 
-    public String getDomain() {
-        return domain;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
     public SiteConfig(String configFile){
         JSONParser parser = new JSONParser();
         try (FileReader fileReader = new FileReader(configFile)){
