@@ -1,6 +1,6 @@
 package com.mycompany.app.picocli_sub_command;
 
-import com.mycompany.app.template.Page;
+import com.mycompany.app.template.MDPageParser;
 import picocli.CommandLine.Command;
 
 import java.io.FileOutputStream;
@@ -72,14 +72,17 @@ public class SubCommandBuild implements Callable<Integer> {
             Path relative = mySite.relativize(file);
             Path newFile = build.resolve(relative);
             if (file.toString().toLowerCase().endsWith(".md")) {
-                Page page = new Page(file.toFile());
+
+                /*
+
+                MDPageParser page = new MDPageParser(file.toFile());
 
                 String filename = newFile.toAbsolutePath().toString();
                 String prefix = filename.substring(0, filename.length() - 3);
                 FileOutputStream writer = new FileOutputStream(prefix + ".html");
                 writer.write(page.getContentAsHtml().getBytes());
 
-                writer.close();
+                writer.close();*/
             } else {
                 Files.copy(file, newFile, StandardCopyOption.REPLACE_EXISTING);
             }

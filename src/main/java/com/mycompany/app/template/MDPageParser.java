@@ -1,96 +1,31 @@
 package com.mycompany.app.template;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
+import java.io.*;
+
 /**
  * Classe permettant de récupérer les métadonnées d'une page en Markdown ainsi
  * que son contenu sous forme de Html.
- *
  */
-public class Page {
+public class MDPageParser {
 
     /**
-     * Le titre de la page.
+     * La configuration du site.
      *
      */
-    private String title;
-
-    /**
-     * L'auteur de la page.
-     *
-     */
-    private String author;
-
-    /**
-     * La date de la page.
-     *
-     */
-    private String date;
-
-    /**
-     * Le contenu de la page, en format Html.
-     *
-     */
-    private String content;
+    private SiteConfig config;
 
     /**
      * Crée une page à partir d'un reader. Ne nécessite pas de fichier, ce qui est
      * bien pratique pour des tests unitaires notamment.
-     * 
-     * @param reader Le reader à partir duquel lire la page.
-     * @throws IOException
+     *
+     * @param config La configuration du site.
      */
-    public Page(Reader reader) throws IOException {
-        BufferedReader bufReader = new BufferedReader(reader);
-
-        for (String line = bufReader.readLine(); line != null && !line.startsWith("---"); line = bufReader.readLine()) {
-            String[] parts = line.split(":");
-
-            switch (parts[0]) {
-            case "titre":
-                title = parts[1].trim();
-                break;
-            case "auteur":
-                author = parts[1].trim();
-                break;
-            case "date":
-                date = parts[1].trim();
-                break;
-            }
-        }
-
-        if (title == null) {
-            throw new Error("La page doit avoir un titre.");
-        }
-        if (author == null) {
-            throw new Error("La page doit avoir un auteur.");
-        }
-        if (date == null) {
-            throw new Error("La page doit avoir une date.");
-        }
-
-        Parser parser = Parser.builder().build();
-        Node document = parser.parseReader(bufReader);
-        HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
-        content = renderer.render(document);
-    }
-
-    /**
-     * Crée une page à partir d'un fichier.
-     * 
-     * @param file Le fichier à partir duquel lire la page.
-     * @throws IOException
-     */
-    public Page(File file) throws IOException {
-        this(new FileReader(file));
+    public MDPageParser(SiteConfig config) {
+        this.config = config;
     }
 
     public PageData parse(Reader reader) throws IOException {
