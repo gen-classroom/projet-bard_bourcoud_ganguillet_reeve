@@ -93,35 +93,50 @@ public class Page {
         this(new FileReader(file));
     }
 
-    /**
-     * @return Le titre de la page.
-     *
-     */
-    public String getTitle() {
-        return title;
+    public PageData parse(Reader reader) throws IOException {
+        BufferedReader bufReader = new BufferedReader(reader);
+        String title = null;
+        String author = null;
+        String date = null;
+
+        for (String line = bufReader.readLine(); line != null && !line.startsWith("---"); line = bufReader.readLine()) {
+            String[] parts = line.split(":");
+
+            switch (parts[0]) {
+                case "titre":
+                    title = parts[1].trim();
+                    break;
+                case "auteur":
+                    author = parts[1].trim();
+                    break;
+                case "date":
+                    date = parts[1].trim();
+                    break;
+            }
+        }
+
+        if (title == null) {
+            throw new Error("La page doit avoir un titre.");
+        }
+        if (author == null) {
+            throw new Error("La page doit avoir un auteur.");
+        }
+        if (date == null) {
+            throw new Error("La page doit avoir une date.");
+        }
+
+        PageMetaData metaData = new PageMetaData(title, author, date);
+
+        Parser parser = Parser.builder().build();
+        Node document = parser.parseReader(bufReader);
+        HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
+        String content = renderer.render(document);
+
+        // TODO: Passer siteConfig à PageData.
+        return new PageData(content, metaData);
     }
 
-    /**
-     * @return L'auteur de la page.
-     *
-     */
-    public String getAuthor() {
-        return author;
-    }
-
-    /**
-     * @return La date de la page.
-     *
-     */
-    public String getDate() {
-        return date;
-    }
-
-    /**
-     * @return Le contenu de la page, au format Html.
-     *
-     */
-    public String getContentAsHtml() {
-        return content;
+    public PageData parse(File file) throws IOException {
+        return parse(new FileReader(file));
     }
 }
