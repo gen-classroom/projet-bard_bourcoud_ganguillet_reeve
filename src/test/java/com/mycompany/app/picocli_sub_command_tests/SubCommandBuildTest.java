@@ -21,5 +21,29 @@ public class SubCommandBuildTest {
         int returnValue = new CommandLine(new Main()).execute("build", "/mySite");
 
         assertEquals(returnValue, 0);
+
+        String currentDirectory = System.getProperty("user.dir");
+
+        File indexHtml = new File(currentDirectory, "mySite/build/index.html");
+        assertTrue(indexHtml.exists());
+
+        BufferedReader indexReader = new BufferedReader(new FileReader(indexHtml));
+        String indexContent =
+                indexReader.lines()
+                        .reduce("", (String acc, String line) -> acc + "\n" + line)
+                        .trim();
+        assertEquals(indexContent, "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "\t<meta charset=\"utf-8\">\n" +
+                "\t<title>mon Site | Mon premier article</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "\t<ul>\n" +
+                "\t<li><a href=\"/index.html\">home</a></li>\n" +
+                "\t<li><a href=\"/content/page.html\">page</a></li>\n" +
+                "</ul>\n" +
+                "\t\n" +
+                "</body>\n" +
+                "</html>");
     }
 }
