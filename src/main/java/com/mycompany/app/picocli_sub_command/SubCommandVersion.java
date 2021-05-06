@@ -13,11 +13,6 @@ public class SubCommandVersion implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        /*
-        Package mainPackage =Main.class.getPackage();
-        String version = mainPackage.getImplementationVersion();
-        System.out.println("version : " + version);
-        */
 
         try {
             Properties appProps = new Properties();
