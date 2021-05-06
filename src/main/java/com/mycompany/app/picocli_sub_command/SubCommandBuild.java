@@ -1,6 +1,7 @@
 package com.mycompany.app.picocli_sub_command;
 
 import com.mycompany.app.template.MDPageParser;
+import com.mycompany.app.template.SiteConfig;
 import picocli.CommandLine.Command;
 
 import java.io.FileOutputStream;
@@ -18,8 +19,8 @@ public class SubCommandBuild implements Callable<Integer> {
         final Path mySite = Paths.get(currentDirectory);
         Path build = Paths.get(currentDirectory + "/build");
         build.toFile().mkdirs();
-
-        Files.walkFileTree(mySite, new BuildVisitor(mySite, build));
+        SiteConfig config = new SiteConfig(mySite.toString()+"/config.json");
+        Files.walkFileTree(mySite, new BuildVisitor(mySite, build, config));
 
         return 0;
     }
@@ -33,14 +34,16 @@ public class SubCommandBuild implements Callable<Integer> {
         private final Path mySite;
         // Le chemin de destination où les fichiers seront convertis ou copiés.
         private final Path build;
-
+        // La config globale du site
+        private final SiteConfig config;
         /**
          * @param mySite Le chemin source du site.
          * @param build  Le chemin où les fichiers seront convertis ou copiés.
          */
-        public BuildVisitor(Path mySite, Path build) {
+        public BuildVisitor(Path mySite, Path build, SiteConfig config) {
             this.mySite = mySite;
             this.build = build;
+            this.config = config;
         }
 
         /**
