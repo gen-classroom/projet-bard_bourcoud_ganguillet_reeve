@@ -16,6 +16,9 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.concurrent.Callable;
 
+/**
+ * Commande générant un site statique à partir de fichiers Markdown.
+ */
 @Command(name = "build", description = "build command")
 public class SubCommandBuild implements Callable<Integer> {
 
