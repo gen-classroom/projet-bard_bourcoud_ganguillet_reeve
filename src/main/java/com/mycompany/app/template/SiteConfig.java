@@ -15,8 +15,8 @@ public class SiteConfig {
         JSONParser parser = new JSONParser();
         try (FileReader fileReader = new FileReader(configFile)){
             JSONObject o = (JSONObject) parser.parse(fileReader);
-            domain = (String) o.get("domain");
-            title = (String) o.get("title");
+            domain = (String) o.get("domaine");
+            title = (String) o.get("titre");
         } catch(IOException | ParseException e) {
             System.out.println(e.getMessage());
         }

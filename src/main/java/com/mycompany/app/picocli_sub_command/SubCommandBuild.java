@@ -5,9 +5,13 @@ import com.mycompany.app.template.PageData;
 import com.mycompany.app.template.SiteConfig;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.concurrent.Callable;
@@ -15,16 +19,37 @@ import java.util.concurrent.Callable;
 @Command(name = "build", description = "build command")
 public class SubCommandBuild implements Callable<Integer> {
 
+    /**
+     * Chemin du dossier contenant le site à construire.
+     */
+    @CommandLine.Parameters(index = "0", description = "the root pathname")
+    private String rootPathname;
+
+    /**
+     * @return  0 si construction réussie
+     *          1 si dossier du site non trouvé depuis le répertoire courant
+     * @throws IOException si erreur dans la lecture des fichiers du site
+     */
     @Override
     public Integer call() throws IOException {
-        String currentDirectory = System.getProperty("user.dir"); // + "/mySite";
+        if (!(rootPathname.charAt(0) == '/')) {
+            System.out.println("The parameters must begin with /");
+            return 1;
+        }
+
+        String currentDirectory = System.getProperty("user.dir") + rootPathname;
         final Path mySite = Paths.get(currentDirectory);
         Path build = Paths.get(currentDirectory + "/build");
         build.toFile().mkdirs();
-        SiteConfig config = new SiteConfig(mySite.toString()+"/config.json");
+
+        SiteConfig config = new SiteConfig(mySite.toString() + "/config.json");
         MDPageParser parser = new MDPageParser(config);
-        FileReader layout = new FileReader(currentDirectory+"/templates/layout.html");
-        Template template = Mustache.compiler().compile(layout);
+        FileReader layout = new FileReader(currentDirectory + "/template/layout.html");
+        Template template = Mustache
+                .compiler()
+                .withLoader((String name) -> new FileReader(new File(currentDirectory + "/template/", name)))
+                .compile(layout);
+
         Files.walkFileTree(mySite, new BuildVisitor(mySite, build, parser, template));
 
         return 0;
@@ -84,8 +109,6 @@ public class SubCommandBuild implements Callable<Integer> {
             Path relative = mySite.relativize(file);
             Path newFile = build.resolve(relative);
             if (file.toString().toLowerCase().endsWith(".md")) {
-
-
 
                 PageData pageData = parser.parse(file.toFile());
                 String out = layout.execute(pageData);
