@@ -8,23 +8,26 @@ import com.samskivert.mustache.Mustache;
 
 public class PageDataTest {
 
+
+    SiteConfig config = new SiteConfig("./mySite/config.json");
+
     @Test
     public void shouldPrintHello()
     {
         String tmpl = "{{content}}";
         Template t = Mustache.compiler().compile(tmpl);
 
-        tmpl = t.execute(new PageData("hello", new PageMetaData("title","author", "12.02.2012")));
+        tmpl = t.execute(new PageData("hello", new PageMetaData("title","author", "12.02.2012"), config));
         assertEquals( "hello",tmpl );
     }
 
     @Test
     public void shouldPrintMetaData()
     {
-        String tmpl = "{{metaData.title}} {{metaData.author}} {{metaData.date}}";
+        String tmpl = "{{page.title}} {{page.author}} {{page.date}}";
         Template t = Mustache.compiler().compile(tmpl);
 
-        tmpl = t.execute(new PageData("content", new PageMetaData("title","author", "12.02.2012")));
+        tmpl = t.execute(new PageData("content", new PageMetaData("title","author", "12.02.2012"), config));
 
         assertEquals( "title author 12.02.2012",tmpl );
     }
@@ -32,11 +35,11 @@ public class PageDataTest {
     @Test
     public void shouldPrintAll()
     {
-        String tmpl = "{{metaData.title}} {{metaData.author}} {{metaData.date}}\n" +
+        String tmpl = "{{page.title}} {{page.author}} {{page.date}}\n" +
                 "{{content}}";
         Template t = Mustache.compiler().compile(tmpl);
 
-        tmpl = t.execute(new PageData("content", new PageMetaData("title","author", "12.02.2012")));
+        tmpl = t.execute(new PageData("content", new PageMetaData("title","author", "12.02.2012"), config));
 
         assertEquals( "title author 12.02.2012\ncontent",tmpl );
     }
