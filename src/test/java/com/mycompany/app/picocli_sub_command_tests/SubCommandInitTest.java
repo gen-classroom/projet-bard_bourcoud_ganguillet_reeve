@@ -13,8 +13,8 @@ public class SubCommandInitTest {
 
     @Test
     public void fileAreCreatedWithInitCommand() throws Exception {
-        new CommandLine(new Main()).execute("init", "/test");
-        StringBuilder path = new StringBuilder("./test");
+        new CommandLine(new Main()).execute("init", "/mySite");
+        StringBuilder path = new StringBuilder("./mySite");
 
         assertTrue( new File(path.toString()).exists() );
         assertTrue( new File(path.toString() + "/index.md").exists() );
