@@ -8,5 +8,22 @@ package com.mycompany.app.template;
     }
     private final String content;
     private final PageMetaData page;
-    private final SiteConfig site;
+
+     /**
+      * @return Le contenu de la page.
+      *
+      */
+     public String getContent() {
+         return content;
+     }
+
+     public PageMetaData getPage() {
+         return page;
+     }
+
+     public SiteConfig getSite() {
+         return site;
+     }
+
+     private final SiteConfig site;
  }
