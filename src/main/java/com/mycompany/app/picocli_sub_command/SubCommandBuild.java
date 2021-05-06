@@ -2,9 +2,12 @@ package com.mycompany.app.picocli_sub_command;
 
 import com.mycompany.app.template.MDPageParser;
 import com.mycompany.app.template.SiteConfig;
+import com.samskivert.mustache.Mustache;
+import com.samskivert.mustache.Template;
 import picocli.CommandLine.Command;
 
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -20,7 +23,10 @@ public class SubCommandBuild implements Callable<Integer> {
         Path build = Paths.get(currentDirectory + "/build");
         build.toFile().mkdirs();
         SiteConfig config = new SiteConfig(mySite.toString()+"/config.json");
-        Files.walkFileTree(mySite, new BuildVisitor(mySite, build, config));
+        MDPageParser parser = new MDPageParser(config);
+        FileReader layout = new FileReader(currentDirectory+"/templates/layout.html");
+        Template template = Mustache.compiler().compile(layout);
+        Files.walkFileTree(mySite, new BuildVisitor(mySite, build, parser, template));
 
         return 0;
     }
@@ -34,16 +40,20 @@ public class SubCommandBuild implements Callable<Integer> {
         private final Path mySite;
         // Le chemin de destination où les fichiers seront convertis ou copiés.
         private final Path build;
-        // La config globale du site
-        private final SiteConfig config;
+        // Parser MD -> Html
+        MDPageParser parser;
+        // Le fichier template de base pour une page
+        private Template layout;
+
         /**
          * @param mySite Le chemin source du site.
          * @param build  Le chemin où les fichiers seront convertis ou copiés.
          */
-        public BuildVisitor(Path mySite, Path build, SiteConfig config) {
+        public BuildVisitor(Path mySite, Path build, MDPageParser parser, Template layout) {
             this.mySite = mySite;
             this.build = build;
-            this.config = config;
+            this.parser = parser;
+            this.layout = layout;
         }
 
         /**
@@ -76,11 +86,10 @@ public class SubCommandBuild implements Callable<Integer> {
             Path newFile = build.resolve(relative);
             if (file.toString().toLowerCase().endsWith(".md")) {
 
-                /*
 
-                MDPageParser page = new MDPageParser(file.toFile());
 
-                String filename = newFile.toAbsolutePath().toString();
+
+                /*String filename = newFile.toAbsolutePath().toString();
                 String prefix = filename.substring(0, filename.length() - 3);
                 FileOutputStream writer = new FileOutputStream(prefix + ".html");
                 writer.write(page.getContentAsHtml().getBytes());
