@@ -16,7 +16,7 @@ public class MDPageParser {
      * La configuration du site.
      *
      */
-    private SiteConfig config;
+    private final SiteConfig config;
 
     /**
      * Crée une page à partir d'un reader. Ne nécessite pas de fichier, ce qui est
@@ -68,7 +68,7 @@ public class MDPageParser {
         String content = renderer.render(document);
 
         // TODO: Passer siteConfig à PageData.
-        return new PageData(content, metaData);
+        return new PageData(content, metaData, config);
     }
 
     public PageData parse(File file) throws IOException {
