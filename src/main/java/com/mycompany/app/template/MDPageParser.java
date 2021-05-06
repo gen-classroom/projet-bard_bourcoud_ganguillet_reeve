@@ -14,7 +14,6 @@ public class MDPageParser {
 
     /**
      * La configuration du site.
-     *
      */
     private final SiteConfig config;
 
@@ -28,6 +27,12 @@ public class MDPageParser {
         this.config = config;
     }
 
+
+    /**
+     * @param reader reader dont le contenu doit être parsé
+     * @return page parsée prête à être convertie en html
+     * @throws IOException si problème pour lecture du fichier
+     */
     public PageData parse(Reader reader) throws IOException {
         BufferedReader bufReader = new BufferedReader(reader);
         String title = null;
@@ -67,10 +72,14 @@ public class MDPageParser {
         HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
         String content = renderer.render(document);
 
-        // TODO: Passer siteConfig à PageData.
         return new PageData(content, metaData, config);
     }
 
+    /**
+     * @param file fichier à parser
+     * @return page parsée prête à être convertie en html
+     * @throws IOException si problème pour lecture du fichier
+     */
     public PageData parse(File file) throws IOException {
         return parse(new FileReader(file));
     }

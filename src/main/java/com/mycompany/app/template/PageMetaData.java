@@ -11,14 +11,23 @@ public class PageMetaData {
     private final String author;
     private final String date;
 
+    /**
+     * @return titre de la page
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * @return Le nom de l'auteur de la page.
+     */
     public String getAuthor() {
         return author;
     }
 
+    /**
+     * @return Le date de publication de la page.
+     */
     public String getDate() {
         return date;
     }
