@@ -1,14 +1,13 @@
 package com.mycompany.app.picocli_sub_command;
 
 import com.mycompany.app.template.MDPageParser;
+import com.mycompany.app.template.PageData;
 import com.mycompany.app.template.SiteConfig;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
 import picocli.CommandLine.Command;
 
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.concurrent.Callable;
@@ -88,13 +87,14 @@ public class SubCommandBuild implements Callable<Integer> {
 
 
 
+                PageData pageData = parser.parse(file.toFile());
+                String out = layout.execute(pageData);
 
-                /*String filename = newFile.toAbsolutePath().toString();
+                String filename = newFile.toAbsolutePath().toString();
                 String prefix = filename.substring(0, filename.length() - 3);
-                FileOutputStream writer = new FileOutputStream(prefix + ".html");
-                writer.write(page.getContentAsHtml().getBytes());
-
-                writer.close();*/
+                FileWriter writer = new FileWriter(prefix + ".html");
+                writer.write(out);
+                writer.close();
             } else {
                 Files.copy(file, newFile, StandardCopyOption.REPLACE_EXISTING);
             }
