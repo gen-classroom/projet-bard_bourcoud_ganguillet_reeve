@@ -27,7 +27,13 @@ Ce dernier permet de configurer la structure générale de chacune des pages de 
 1. Exécuter la commande : ```java -jar statique-0.0.2.jar build <Dossier racine de votre site> ```
 2. Les pages html de votre site statique ont été créés dans un dossier build contenu dans le dossier racine de votre site
 
-### supprimer le dossier build
+### Mettre votre site sur un serveur http
+1. Déplacer le .jar dans le dossier racine de votre site
+2. Ouvrir un terminal de commande et accéder au dossier racine de votre site statique
+3. Exécuter la commande : ```java -jar statique-0.0.2.jar serve```
+4. Vous pouvez accéder aux pages de votre site sur ```localhost:8080```
+
+### Supprimer le dossier build
 1. Déplacer le .jar dans le dossier crée par l'opération précédente (cette étape sera modifié lors du prochain sprint)
 2. Ouvrir un terminal de commande et accéder au dossier racine de votre site statique (dossier contenant le index.md et le config.js)
 3. Exécuter la commande : ```java -jar statique-0.0.2.jar clean```
