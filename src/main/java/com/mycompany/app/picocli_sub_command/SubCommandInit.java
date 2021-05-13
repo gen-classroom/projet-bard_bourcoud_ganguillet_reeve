@@ -84,10 +84,10 @@ public class SubCommandInit implements Callable<Integer> {
         final String baseLayoutMenu = "<html lang=\"en\">\n" +
                 "<head>\n" +
                 "\t<meta charset=\"utf-8\">\n" +
-                "\t<title>{{ site.titre }} | {{ page.titre }}</title>\n" +
+                "\t<title>{{ site.title }} | {{ page.title }}</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "\t{% include menu.html }\n" +
+                "\t{{> menu.html }}\n" +
                 "\t{{ content }}\n" +
                 "</body>\n" +
                 "</html>";
