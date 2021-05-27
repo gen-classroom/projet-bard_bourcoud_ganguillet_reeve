@@ -60,7 +60,7 @@ public class SubCommandInit implements Callable<Integer> {
                                 new FileOutputStream(path.toString() + "/layout.html"), StandardCharsets.UTF_8));
                 final String baseLayoutMenu = "<html lang=\"en\">\n" + "<head>\n" + "\t<meta charset=\"utf-8\">\n"
                                 + "\t<title>{{ site.title }} | {{ page.title }}</title>\n" + "</head>\n" + "<body>\n"
-                                + "\t{{> menu.html }}\n" + "\t{{ content }}\n" + "</body>\n" + "</html>";
+                                + "\t{{> menu.html }}\n" + "\t{{{ content }}}\n" + "</body>\n" + "</html>";
 
                 layoutHtml.write(baseLayoutMenu);
                 layoutHtml.close();
