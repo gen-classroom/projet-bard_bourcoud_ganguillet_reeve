@@ -14,7 +14,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
@@ -48,7 +47,7 @@ public class SubCommandBuild implements Callable<Integer> {
         final Path mySite = Paths.get(currentDirectory);
         Path destination = Paths.get(currentDirectory + "/build");
 
-        this.build(mySite, destination);
+        build(mySite, destination);
 
         if (watch) {
             WatchService watchService = FileSystems.getDefault().newWatchService();
@@ -62,7 +61,7 @@ public class SubCommandBuild implements Callable<Integer> {
                 }
 
                 System.out.println("Changed detected : rebuilding");
-                this.build(mySite, destination);
+                build(mySite, destination);
 
                 key.reset();
                 key = watchService.take();
@@ -72,7 +71,7 @@ public class SubCommandBuild implements Callable<Integer> {
         return 0;
     }
 
-    private void build(Path mySite, Path destination) throws IOException {
+    public static void build(Path mySite, Path destination) throws IOException {
         destination.toFile().mkdirs();
 
         String currentDirectory = mySite.toString();
