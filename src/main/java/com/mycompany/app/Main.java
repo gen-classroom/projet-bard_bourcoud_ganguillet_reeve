@@ -12,6 +12,7 @@ public class Main implements Callable<Integer> {
     @Override
     public Integer call() {
         System.out.println("Please use one of the subcommands: 'new', 'clean', 'build' or 'serve'");
+        System.out.println ("Bonjour LGTM!!");
         return 0;
     }
 
