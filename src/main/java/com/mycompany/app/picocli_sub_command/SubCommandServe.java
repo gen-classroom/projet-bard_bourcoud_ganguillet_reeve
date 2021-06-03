@@ -44,14 +44,22 @@ public class SubCommandServe implements Callable<Integer> {
             mySite.register(watchService, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE,
                     StandardWatchEventKinds.ENTRY_MODIFY);
 
+            boolean rebuild = false;
             WatchKey key = watchService.take();
             while (key != null) {
                 for (WatchEvent<?> event : key.pollEvents()) {
+                    Path changedFile = mySite.resolve(event.context().toString()).toAbsolutePath();
+                    if (!changedFile.startsWith(destination.toAbsolutePath())) {
+                        rebuild = true;
+                    }
                     System.out.println("Event : " + event.context());
                 }
 
-                System.out.println("Changed detected : rebuilding");
-                SubCommandBuild.build(mySite, destination);
+                if (rebuild) {
+                    System.out.println("Changed detected : rebuilding");
+                    SubCommandBuild.build(mySite, destination);
+                    rebuild = false;
+                }
 
                 key.reset();
                 key = watchService.take();
