@@ -28,13 +28,16 @@ public class SubCommandBuild implements Callable<Integer> {
     @CommandLine.Parameters(index = "0", description = "the root pathname")
     private String rootPathname;
 
+    @CommandLine.Option(names = { "--watch" }, description = "run build every time a file has changed")
+    private boolean watch;
+
     /**
-     * @return  0 si construction réussie
-     *          1 si dossier du site non trouvé depuis le répertoire courant
+     * @return 0 si construction réussie 1 si dossier du site non trouvé depuis le
+     *         répertoire courant
      * @throws IOException si erreur dans la lecture des fichiers du site
      */
     @Override
-    public Integer call() throws IOException {
+    public Integer call() throws IOException, InterruptedException {
         if (!(rootPathname.charAt(0) == '/')) {
             System.out.println("The parameters must begin with /");
             return 1;
@@ -42,24 +45,57 @@ public class SubCommandBuild implements Callable<Integer> {
 
         String currentDirectory = System.getProperty("user.dir") + rootPathname;
         final Path mySite = Paths.get(currentDirectory);
-        Path build = Paths.get(currentDirectory + "/build");
-        build.toFile().mkdirs();
+        Path destination = Paths.get(currentDirectory + "/build");
 
-        SiteConfig config = new SiteConfig(mySite.toString() + "/config.json");
-        MDPageParser parser = new MDPageParser(config);
-        FileReader layout = new FileReader(currentDirectory + "/template/layout.html");
-        Template template = Mustache
-                .compiler()
-                .withLoader((String name) -> new FileReader(new File(currentDirectory + "/template/", name)))
-                .compile(layout);
+        build(mySite, destination);
 
-        Files.walkFileTree(mySite, new BuildVisitor(mySite, build, parser, template));
+        if (watch) {
+            WatchService watchService = FileSystems.getDefault().newWatchService();
+            mySite.register(watchService, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE,
+                    StandardWatchEventKinds.ENTRY_MODIFY);
+
+            boolean rebuild = false;
+            WatchKey key = watchService.take();
+            while (key != null) {
+                for (WatchEvent<?> event : key.pollEvents()) {
+                    Path changedFile = mySite.resolve(event.context().toString()).toAbsolutePath();
+                    if (!changedFile.startsWith(destination.toAbsolutePath())) {
+                        rebuild = true;
+                    }
+                    System.out.println("Event : " + event.context());
+                }
+
+                if (rebuild) {
+                    System.out.println("Changed detected : rebuilding");
+                    SubCommandBuild.build(mySite, destination);
+                    rebuild = false;
+                }
+
+                key.reset();
+                key = watchService.take();
+            }
+        }
 
         return 0;
     }
 
+    public static void build(Path mySite, Path destination) throws IOException {
+        destination.toFile().mkdirs();
+
+        String currentDirectory = mySite.toString();
+        SiteConfig config = new SiteConfig(currentDirectory + "/config.json");
+        MDPageParser parser = new MDPageParser(config);
+        FileReader layout = new FileReader(currentDirectory + "/template/layout.html");
+        Template template = Mustache.compiler()
+                .withLoader((String name) -> new FileReader(new File(currentDirectory + "/template/", name)))
+                .compile(layout);
+
+        Files.walkFileTree(mySite, new BuildVisitor(mySite, destination, parser, template));
+    }
+
     /**
-     * Visiteur convertissant les fichiers Html et copiant les autres fichiers du chemin source au chemin de destination.
+     * Visiteur convertissant les fichiers Html et copiant les autres fichiers du
+     * chemin source au chemin de destination.
      */
     private static class BuildVisitor extends SimpleFileVisitor<Path> {
 
@@ -129,5 +165,3 @@ public class SubCommandBuild implements Callable<Integer> {
         }
     }
 }
-
-
