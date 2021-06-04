@@ -12,6 +12,10 @@ public class SubCommandInit implements Callable<Integer> {
     @CommandLine.Parameters(index = "0", description = "the root pathname")
     private String rootPathname;
 
+    public void setRootPathname(String rootPathname) {
+        this.rootPathname = rootPathname;
+    }
+
     @Override
     public Integer call() throws IOException {
         if (!(rootPathname.charAt(0) == '/')){

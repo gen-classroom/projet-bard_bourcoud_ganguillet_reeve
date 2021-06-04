@@ -2,6 +2,9 @@ package com.mycompany.app;
 
 import java.util.concurrent.Callable;
 import com.mycompany.app.picocli_sub_command.*;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 

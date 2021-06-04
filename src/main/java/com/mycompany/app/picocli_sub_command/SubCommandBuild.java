@@ -28,6 +28,10 @@ public class SubCommandBuild implements Callable<Integer> {
     @CommandLine.Parameters(index = "0", description = "the root pathname")
     private String rootPathname;
 
+    public void setRootPathname(String rootPathname) {
+        this.rootPathname = rootPathname;
+    }
+
     /**
      * @return  0 si construction réussie
      *          1 si dossier du site non trouvé depuis le répertoire courant
