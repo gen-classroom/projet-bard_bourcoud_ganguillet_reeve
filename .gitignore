@@ -3,3 +3,6 @@
 .settings
 .vscode/
 target/
+/.idea/
+/mySite/
+/coverage_report/
