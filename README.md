@@ -39,6 +39,13 @@ Ce dernier permet de configurer la structure générale de chacune des pages de 
 3. Exécuter la commande : ```java -jar statique-0.0.2.jar clean```
 4. Votre dossier build s'il existe a été supprimé
 
+### Option `watch`
+Pour les commandes `build` et `serve`, il est possible de les lancer avec l'option `--watch` si vous désirez que
+votre site soit recompilé à chaque fois que vous changez et sauvegardez l'un de vos fichiers markdown. 
+
+N.B: Dans le cas de `serve`, les changements de votre page ne se verront pas automatiquement dans votre navigateur.
+Il vous faut rafraîchir la page pour voir les changements
+
 ## Pour modifier le programme
 Si vous voulez modifiez/améliorez notre code, sentez-vous libre! Il vous suffit de forker notre repo.
 ### Instructions pour la compilation
